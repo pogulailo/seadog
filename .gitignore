@@ -1,5 +1,8 @@
 # IDEs
 /.idea/
 
+# Environment files
+/.env
+
 # Temporary files
 /var/
