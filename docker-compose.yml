@@ -1,6 +1,15 @@
-version: "3.7"
+version: "3.8"
 
 services:
+  app:
+    build:
+      context: docker/development
+      dockerfile: app/Dockerfile
+    environment:
+      PHP_IDE_CONFIG: serverName=${DOMAIN_NAME}
+    volumes:
+      - ./app:/app
+
   nginx:
     build:
       context: docker/development
@@ -13,23 +22,7 @@ services:
     volumes:
       - ./app:/app
     depends_on:
-      - php-fpm
-
-  php-fpm:
-    build:
-      context: docker/development
-      dockerfile: php-fpm/Dockerfile
-    environment:
-      PHP_IDE_CONFIG: serverName=${DOMAIN_NAME}
-    volumes:
-      - ./app:/app
-
-  php-cli:
-    build:
-      context: docker/development
-      dockerfile: php-cli/Dockerfile
-    volumes:
-      - ./app:/app
+      - app
 
   mysql:
     image: mysql:8
@@ -41,4 +34,4 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./var/database:/var/lib/mysql:rw
+      - ./var/mysql:/var/lib/mysql:rw
